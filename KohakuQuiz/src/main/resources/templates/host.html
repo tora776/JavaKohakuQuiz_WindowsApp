@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>司会者一覧</title>
+</head>
+<body>
+    <h1>司会者一覧</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>司会者名</th>
+                <th>年</th>
+                <th>出場回数</th>
+                <th>担当司会</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="host : ${hosts}">
+                <td th:text="${host.participation_id}"></td>
+                <td th:text="${host.host_name}"></td>
+                <td th:text="${host.year}"></td>
+                <td th:text="${host.appearance}"></td>
+                <td th:text="${host.host_role}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/">トップページに戻る</a>
+</body>
+</html>

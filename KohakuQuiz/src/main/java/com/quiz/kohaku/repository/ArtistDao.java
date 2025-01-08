@@ -45,7 +45,6 @@ public class ArtistDao implements IArtistDao {
 			artist.setAppearance(result.get("appearance") != null ? (int)result.get("appearance") : 0);
 			artist.setTeam(result.get("team") != null ? (String)result.get("team") : "");
 			list.add(artist);
-			System.out.println(artist);
 		}
 		
 		return list;

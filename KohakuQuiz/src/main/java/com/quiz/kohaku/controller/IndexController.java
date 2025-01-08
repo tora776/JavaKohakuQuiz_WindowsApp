@@ -2,8 +2,10 @@ package com.quiz.kohaku.controller;
 
 
 import com.quiz.kohaku.model.Artist;
+import com.quiz.kohaku.model.Host;
 import com.quiz.kohaku.model.Quiz;
 import com.quiz.kohaku.service.ArtistService;
+import com.quiz.kohaku.service.HostService;
 
 import java.util.List;
 
@@ -18,11 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class IndexController {
 	
 	private final ArtistService artistService;
+	private final HostService hostService;
 	    
 	    @Autowired
-	    public IndexController(ArtistService artistService) {
+	    public IndexController(ArtistService artistService, HostService hostService) {
 	        this.artistService = artistService;
+	        this.hostService = hostService;
 	    }
+	    
 	
 	@GetMapping("/")
 	private String showForm(Model model) {
@@ -50,6 +55,16 @@ public class IndexController {
 
 	    // artist.htmlを表示
 	    return "artist";
+	}
+	
+	@GetMapping("/hosts")
+	public String showHosts(Model model) {
+	    // アーティストデータを取得してモデルに追加
+	    List<Host> hosts = hostService.hostList();
+	    model.addAttribute("hosts", hosts);
+
+	    // host.htmlを表示
+	    return "host";
 	}
 	
 }
