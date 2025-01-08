@@ -36,16 +36,18 @@ public class IndexController {
 	
 	    @GetMapping("/")
 	    private String showForm(Model model) {
-	        // 10個のフォームとクイズを作成
+	        // 10個のクイズを作成
 	        List<Quiz> quizList = new ArrayList<>();
 	        for (int i = 0; i < 10; i++) {
 	            Quiz quiz = new Quiz();
 	            quiz.setQuiz("2024年紅白歌合戦の総合司会は誰？");
 	            quizList.add(quiz);
+	            
+	            // フォームをモデルに追加
+		        model.addAttribute("form", new Form()); 
 	        }
 
-	        // フォームとクイズリストをモデルに追加
-	        model.addAttribute("form", new Form());  // Form オブジェクトを追加
+	        // クイズリストをモデルに追加
 	        model.addAttribute("quizList", quizList);
 
 	        return "index";
