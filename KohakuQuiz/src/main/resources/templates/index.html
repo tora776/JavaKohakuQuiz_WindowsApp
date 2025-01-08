@@ -5,25 +5,25 @@
 <title>紅白クイズ</title>
 </head>
 <body>
-	<h1>紅白クイズ</h1>
-	<form th:action="@{/submit}" th:object="${form}" method="post">
-		<!-- クイズを繰り返し表示 -->
-		<div th:each="quiz : ${quizList}">
-			<p th:text="${quiz.quiz}"></p>  <!-- クイズ文を表示 -->
-			<label>
-				<input type="radio" th:field="*{answer}" value="option1"/>オプション1
-			</label><br/>
-			<label>
-				<input type="radio" th:field="*{answer}" value="option2"/>オプション2
-			</label><br/>
-			<label>
-				<input type="radio" th:field="*{answer}" value="option3"/>オプション3
-			</label><br/>
-			<label>
-				<input type="radio" th:field="*{answer}" value="option4"/>オプション4
-			</label><br/>
-		</div>
-		<button type="submit">解答を送信</button>
-	</form>
+    <h1>紅白クイズ</h1>
+    <form th:action="@{/submit}" th:object="${form}" method="post">
+        <!-- クイズを繰り返し表示 -->
+        <div th:each="quiz, iterStat : ${quizList}">
+            <p th:text="${quiz.quiz}"></p>  <!-- クイズ文を表示 -->
+            <label>
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="option1"/>オプション1
+            </label><br/>
+            <label>
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="option2"/>オプション2
+            </label><br/>
+            <label>
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="option3"/>オプション3
+            </label><br/>
+            <label>
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="option4"/>オプション4
+            </label><br/>
+        </div>
+        <button type="submit">解答を送信</button>
+    </form>
 </body>
 </html>

@@ -10,7 +10,7 @@ public class Util {
 		// return用の空のListを用意
 		List<Quiz> quizList = new ArrayList<Quiz>();
 		// クイズの個数
-		int quizCount = 9;
+		int quizCount = 10;
 		// データをlistにまとめる
 		for(int i = 0; i < quizCount; i++) {
 			Quiz quiz = new Quiz();

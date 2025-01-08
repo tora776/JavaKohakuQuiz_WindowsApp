@@ -1,18 +1,15 @@
 package com.quiz.kohaku.controller;
 
+import java.util.List;
 
 public class Form {
-	private String answer;
+    private List<String> answers; // 複数回答を保持するリスト
 
-	public String getAnswer() {
-		return answer;
-	}
+    public List<String> getAnswers() {
+        return answers;
+    }
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-	
-	
-	
-	
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
+    }
 }

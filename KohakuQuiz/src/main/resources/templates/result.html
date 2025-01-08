@@ -5,10 +5,10 @@
 <title>解答結果</title>
 </head>
 <body>
-	<h1>選択されたオプション</h1>
-	<ul>
-		<li th:each="answer: ${answers}" th:text="${answer}">ここに選択された回答</li>
-	</ul>
-	<a href="/">戻る</a>
+    <h1>選択されたオプション</h1>
+    <ul>
+        <li th:each="answer, iterStat : ${answers}" th:text="'問題 ' + (iterStat.index + 1) + ': ' + answer"></li>
+    </ul>
+    <a href="/">戻る</a>
 </body>
 </html>

@@ -40,12 +40,17 @@ public class IndexController {
 	        List<Quiz> quizList = new ArrayList<>();
 	        for (int i = 0; i < 10; i++) {
 	            Quiz quiz = new Quiz();
-	            quiz.setQuiz("2024年紅白歌合戦の総合司会は誰？");
+	            quiz.setQuiz("2024年紅白歌合戦の総合司会は誰？（問題 " + (i + 1) + "）");
 	            quizList.add(quiz);
-	            
-	            // フォームをモデルに追加
-		        model.addAttribute("form", new Form()); 
 	        }
+
+	        // フォームに回答リストを追加
+	        Form form = new Form();
+	        form.setAnswers(new ArrayList<>(quizList.size())); // 初期リストを作成
+	        for (int i = 0; i < quizList.size(); i++) {
+	            form.getAnswers().add(""); // 空の回答を追加
+	        }
+	        model.addAttribute("form", form);
 
 	        // クイズリストをモデルに追加
 	        model.addAttribute("quizList", quizList);
@@ -55,11 +60,11 @@ public class IndexController {
 		
 		
 	
-	@PostMapping("/submit")
-	public String submitForm(@ModelAttribute Form form, Model model) {
-		model.addAttribute("answers", form.getAnswer());
-		return "result";
-	}
+    @PostMapping("/submit")
+    public String submitForm(@ModelAttribute Form form, Model model) {
+        model.addAttribute("answers", form.getAnswers()); // 複数の回答をモデルに追加
+        return "result";
+    }
 	
 	@GetMapping("/artists")
 	public String showArtists(Model model) {
