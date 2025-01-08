@@ -4,8 +4,10 @@ package com.quiz.kohaku.controller;
 import com.quiz.kohaku.model.Artist;
 import com.quiz.kohaku.model.Host;
 import com.quiz.kohaku.model.Quiz;
+import com.quiz.kohaku.model.Result;
 import com.quiz.kohaku.service.ArtistService;
 import com.quiz.kohaku.service.HostService;
+import com.quiz.kohaku.service.ResultService;
 
 import java.util.List;
 
@@ -21,11 +23,13 @@ public class IndexController {
 	
 	private final ArtistService artistService;
 	private final HostService hostService;
+	private final ResultService resultService;
 	    
 	    @Autowired
-	    public IndexController(ArtistService artistService, HostService hostService) {
+	    public IndexController(ArtistService artistService, HostService hostService, ResultService resultService) {
 	        this.artistService = artistService;
 	        this.hostService = hostService;
+	        this.resultService = resultService;
 	    }
 	    
 	
@@ -59,12 +63,22 @@ public class IndexController {
 	
 	@GetMapping("/hosts")
 	public String showHosts(Model model) {
-	    // アーティストデータを取得してモデルに追加
+	    // ホストデータを取得してモデルに追加
 	    List<Host> hosts = hostService.hostList();
 	    model.addAttribute("hosts", hosts);
 
 	    // host.htmlを表示
 	    return "host";
+	}
+	
+	@GetMapping("/resultKohaku")
+	public String showResults(Model model) {
+	    // 勝敗データを取得してモデルに追加
+	    List<Result> results = resultService.resultList();
+	    model.addAttribute("results", results);
+
+	    // result.htmlを表示
+	    return "resultKohaku";
 	}
 	
 }

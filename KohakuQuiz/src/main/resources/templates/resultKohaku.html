@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>勝者</title>
+</head>
+<body>
+    <h1>勝者一覧</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>年度</th>
+                <th>勝者</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.year}"></td>
+                <td th:text="${result.winner}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/">トップページに戻る</a>
+</body>
+</html>
