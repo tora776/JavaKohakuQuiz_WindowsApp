@@ -25,7 +25,7 @@ public class ArtistDao implements IArtistDao {
 	@Override
 	public List<Artist> artistList() {
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append("SELECT d.participation_id, d.artist_name, d.artist_song, d.year, d.appearance, d.team FROM artist");
+		sqlBuilder.append("SELECT * FROM artist");
 		String sql = sqlBuilder.toString();
 		
 		// パラメータ設定用Map
@@ -35,17 +35,19 @@ public class ArtistDao implements IArtistDao {
 		// return用の空のListを用意
 		List<Artist> list = new ArrayList<Artist>();
 		
-		// データをDiaryにまとめる
+		// データをlistにまとめる
 		for(Map<String, Object>result : resultList) {
 			Artist artist = new Artist();
-			artist.setParticipation_id((int)result.get("participation_id"));
-			artist.setArtist_name((String)result.get("artist_name"));
-			artist.setArtist_song((String)result.get("artist_song"));
-			artist.setYear((int)result.get("year"));
-			artist.setAppearance((int)result.get("appearance"));
-			artist.setTeam((String)result.get("team"));
+			artist.setParticipation_id(result.get("participation_id") != null ? (int)result.get("participation_id") : 0);
+			artist.setArtist_name(result.get("artist_name") != null ? (String)result.get("artist_name") : "");
+			artist.setArtist_song(result.get("artist_song") != null ? (String)result.get("artist_song") : "");
+			artist.setYear(result.get("year") != null ? (int)result.get("year") : 0);
+			artist.setAppearance(result.get("appearance") != null ? (int)result.get("appearance") : 0);
+			artist.setTeam(result.get("team") != null ? (String)result.get("team") : "");
 			list.add(artist);
+			System.out.println(artist);
 		}
+		
 		return list;
 	}
 

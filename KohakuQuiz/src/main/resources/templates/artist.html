@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>アーティスト一覧</title>
+</head>
+<body>
+    <h1>アーティスト一覧</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>アーティスト名</th>
+                <th>曲名</th>
+                <th>年</th>
+                <th>回数</th>
+                <th>チーム</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="artist : ${artists}">
+                <td th:text="${artist.participation_id}"></td>
+                <td th:text="${artist.artist_name}"></td>
+                <td th:text="${artist.artist_song}"></td>
+                <td th:text="${artist.year}"></td>
+                <td th:text="${artist.appearance}"></td>
+                <td th:text="${artist.team}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/">トップページに戻る</a>
+</body>
+</html>
