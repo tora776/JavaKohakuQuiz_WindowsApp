@@ -6,7 +6,9 @@
 </head>
 <body>
 	<h1>選択されたオプション</h1>
-	<p th:text="${answer}">ここに選択されたオプションが表示される</p>
+	<ul>
+		<li th:each="answer: ${answers}" th:text="${answer}">ここに選択された回答</li>
+	</ul>
 	<a href="/">戻る</a>
 </body>
 </html>

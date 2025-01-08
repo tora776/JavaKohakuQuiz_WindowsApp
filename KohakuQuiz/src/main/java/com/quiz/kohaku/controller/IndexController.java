@@ -9,6 +9,7 @@ import com.quiz.kohaku.service.ArtistService;
 import com.quiz.kohaku.service.HostService;
 import com.quiz.kohaku.service.ResultService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +34,28 @@ public class IndexController {
 	    }
 	    
 	
-	@GetMapping("/")
-	private String showForm(Model model) {
-		model.addAttribute("form", new Form());
-		
-		Quiz quiz = new Quiz();
-		quiz.setQuiz("2024年紅白歌合戦の総合司会は誰？");
-		model.addAttribute("quiz", quiz);
-		return "index";
-	}
+	    @GetMapping("/")
+	    private String showForm(Model model) {
+	        // 10個のフォームとクイズを作成
+	        List<Quiz> quizList = new ArrayList<>();
+	        for (int i = 0; i < 10; i++) {
+	            Quiz quiz = new Quiz();
+	            quiz.setQuiz("2024年紅白歌合戦の総合司会は誰？");
+	            quizList.add(quiz);
+	        }
+
+	        // フォームとクイズリストをモデルに追加
+	        model.addAttribute("form", new Form());  // Form オブジェクトを追加
+	        model.addAttribute("quizList", quizList);
+
+	        return "index";
+	    }
 		
 		
 	
 	@PostMapping("/submit")
 	public String submitForm(@ModelAttribute Form form, Model model) {
-		model.addAttribute("answer", form.getAnswer());
+		model.addAttribute("answers", form.getAnswer());
 		return "result";
 	}
 	

@@ -1,5 +1,6 @@
 package com.quiz.kohaku.controller;
 
+
 public class Form {
 	private String answer;
 
@@ -10,6 +11,8 @@ public class Form {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+	
+	
 	
 	
 }
