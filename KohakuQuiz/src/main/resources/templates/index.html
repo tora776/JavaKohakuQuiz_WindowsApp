@@ -9,7 +9,7 @@
     <form th:action="@{/submit}" th:object="${form}" method="post">
         <!-- クイズを繰り返し表示 -->
         <div th:each="quiz, iterStat : ${quizList}">
-            <p th:text="${quiz.quiz}"></p>  <!-- クイズ文を表示 -->
+            <p th:text="${quiz.quiz}"></p>
             <label>
                 <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="option1"/>オプション1
             </label><br/>

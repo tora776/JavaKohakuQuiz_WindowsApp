@@ -25,7 +25,7 @@ public class ArtistDao implements IArtistDao {
 	@Override
 	public List<Artist> artistList() {
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append("SELECT * FROM artist");
+		sqlBuilder.append("SELECT * FROM artist WHERE team != '企画'");
 		String sql = sqlBuilder.toString();
 		
 		// パラメータ設定用Map
