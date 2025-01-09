@@ -41,8 +41,6 @@ public class Util {
 		// クイズを作成
 		
 		Quiz quiz = new Quiz();
-		// String quiz_template = quizzes.get(quiz_id).getQuiz_template();
-		// quiz.setQuiz(quiz_template);
 		quiz = buildQuizFromTemplate(quiz_id, quizzes);
 		// 選択肢を作成
 		
@@ -62,7 +60,7 @@ public class Util {
 		String year;
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
-		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); // ①
+		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); 
 		String yyyy = dtf1.format(nowDate);
 		// DBよりリストを取得
 		List<Artist> artists = artistService.artistList();
@@ -79,7 +77,7 @@ public class Util {
 		
 		
 		// テンプレートに値を代入
-		switch(quiz_id) {
+		switch(quiz_id + 1) {
 		
 			case 1: // {yyyy}年現在、{アーティスト名}は過去{x}回紅白に出場している。
 				// アーティスト名・出場回数を取得
@@ -138,7 +136,7 @@ public class Util {
 				appearance = String.valueOf(artist.getAppearance());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
-				quiz_template = quiz_template.replace("{曲名}", artist_song);
+				quiz_template = quiz_template.replace("{曲名}", artist_song); // 出力されず
 				quiz_template = quiz_template.replace("{x}", appearance);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
@@ -190,7 +188,7 @@ public class Util {
 				result = getRandomResult(results);
 				year = String.valueOf(result.getYear());
 				// テンプレートを置き換え
-				quiz_template = quiz_template.replace("{yyyy}", yyyy);
+				quiz_template = quiz_template.replace("{yyyy}年", "");
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				break;
