@@ -2,6 +2,8 @@ package com.quiz.kohaku.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -58,6 +60,7 @@ public class Util {
 		String artist2_name;
 		String artist_song;
 		String year;
+		List<Artist> artistChoices = new ArrayList<>(3);
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); 
@@ -70,10 +73,6 @@ public class Util {
 		Quiz quiz = quizzes.get(quiz_id);
 		// クイズのテンプレートを取得
 		String quiz_template = quiz.getQuiz_template();
-		String choice_template1 = quiz.getChoice_template1();
-		String choice_template2 = quiz.getChoice_template2();
-		String choice_template3 = quiz.getChoice_template3();
-		String choice_template4 = quiz.getChoice_template4();
 		
 		
 		// テンプレートに値を代入
@@ -88,6 +87,13 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				quiz_template = quiz_template.replace("{x}", appearance);
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
+				/*
+				// 選択肢を作成
+				artistChoices = getArtistChoices(artist, artists);
+				quiz = getArtistAppearanceChoices(quiz, artistChoices);
+				*/
+				
+				
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				break;
@@ -114,6 +120,11 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				/*
+				// 選択肢を作成
+				artistChoices = getArtistChoices(artist, artists);
+				quiz = getArtistSongChoices(quiz, artistChoices);
+				*/
 				break;
 				
 			case 4: // {アーティスト名}が紅白出場{x}回目で歌った楽曲は何？
@@ -126,6 +137,11 @@ public class Util {
 				quiz_template = quiz_template.replace("{x}", appearance);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				/*
+				// 選択肢を作成
+				artistChoices = getArtistChoices(artist, artists);
+				quiz = getArtistSongChoices(quiz, artistChoices);
+				*/
 				break;
 				
 			case 5: // {アーティスト名}は{曲名}を{x}回歌っている？
@@ -197,63 +213,7 @@ public class Util {
 		return quiz;
 	}
 	
-	private Quiz buildChoiceFromTemplate(int quiz_id, List<Quiz> quizzes) {
-		// DBよりリストを取得
-		List<Artist> artists = artistService.artistList();
-		List<Host> hosts = hostService.hostList();
-		List<Result> results = resultService.resultList();
-		// クイズを取得
-		Quiz quiz = quizzes.get(quiz_id);
-		// テンプレートに値を代入
-			switch(quiz_id) {
-				case 1: // 2025年現在、{アーティスト名}は過去{x}回紅白に出場している。
-					// アーティスト名・出場回数を取得
-					Random random = new Random();
-					int artist_id = random.nextInt(artists.size());
-					Artist artist = artists.get(artist_id);
-					String artist_name = artist.getArtist_name();
-					String appearance = String.valueOf(artist.getAppearance());
-					// 選択肢を置き換え
-					
-					// クイズを作成
-					
-					break;
-				case 2: // 2025年現在、{アーティスト名}は{アーティスト名}より紅白の出場回数が多い。
-					
-					break;
-				case 3: // {アーティスト名}が紅白で初めて歌った楽曲は何？
-					
-					break;
-				case 4: // {アーティスト名}が紅白出場{x}回目で歌った楽曲は何？
-					
-					break;
-				case 5: // {アーティスト名}は{曲名}を{x}回歌っている？
-					
-					break;
-				case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
-					
-					break;
-					
-				case 7: // {yyyy}年の紅白歌合戦の紅組司会は誰？
-					
-					break;
-				case 8: // {yyyy}年の紅白歌合戦の白組司会は誰？
-					
-					break;
-				case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、a,bとあと一人は？
-					
-					break;
-				case 10: // 2025年現在、歴代紅白歌合戦でどちらのほうが勝利回数が多い？
-					
-					break;
-				case 11: // 昨年{yyyy年}の紅白歌合戦の勝利チームは？
-					
-					break;
-				default:
-			}
-		
-		return quiz;
-	}
+	
 	
 	private Artist getRandomArtist(List<Artist> artists) {
 		Random random = new Random();
@@ -274,5 +234,44 @@ public class Util {
 		int result_id = random.nextInt(results.size());
 		Result result = results.get(result_id);
 		return result;
+	}
+	
+	// 正誤含めた4件アーティストの選択肢を作成する
+	private List<Artist> getArtistChoices(Artist artist, List<Artist> artists) {
+		// 空のリストを作成
+		List<Artist> artistChoices = new ArrayList<Artist>(3);
+		// 正解を格納
+		artistChoices.add(artist);
+		// ダミーを格納
+		for(int i = 0; i < artistChoices.size(); i++) {
+			Artist dummyArtist = getRandomArtist(artists);
+			artistChoices.add(dummyArtist);
+		}
+		// リストをシャッフルする
+		Collections.shuffle(artistChoices);
+				
+		return artistChoices;
+	}
+	
+	// 正誤含めた4件アーティストの選択肢を作成する
+	private Quiz getArtistSongChoices(Quiz quiz, List<Artist> artistChoices) {
+		// 選択肢にアーティストを格納する
+		quiz.setChoice_template1(artistChoices.get(0).getArtist_song());
+		quiz.setChoice_template2(artistChoices.get(1).getArtist_song());
+		quiz.setChoice_template3(artistChoices.get(2).getArtist_song());
+		quiz.setChoice_template4(artistChoices.get(3).getArtist_song());
+		
+		return quiz;
+	}
+	
+	// 正誤含めた4件アーティストの選択肢を作成する
+	private Quiz getArtistAppearanceChoices(Quiz quiz, List<Artist> artistChoices) {
+		// 選択肢にアーティストを格納する
+		quiz.setChoice_template1(String.valueOf(artistChoices.get(0).getAppearance()));
+		quiz.setChoice_template1(String.valueOf(artistChoices.get(1).getAppearance()));
+		quiz.setChoice_template1(String.valueOf(artistChoices.get(2).getAppearance()));
+		quiz.setChoice_template1(String.valueOf(artistChoices.get(3).getAppearance()));
+		
+		return quiz;
 	}
 }
