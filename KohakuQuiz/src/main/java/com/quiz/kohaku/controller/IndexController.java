@@ -43,8 +43,11 @@ public class IndexController {
 	
 	@PostMapping("/submit")
 	public String submitForm(@ModelAttribute Form form, Model model) {
-		model.addAttribute("answers", form.getAnswers());
-		return "result";
+		 // フォームから受け取った回答リストをモデルに追加
+	    List<String> answers = form.getAnswers();
+	    model.addAttribute("answers", answers);
+
+	    return "result";
 	}
 	
 }
