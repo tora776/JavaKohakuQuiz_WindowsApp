@@ -11,16 +11,16 @@
         <div th:each="quiz, iterStat : ${quizList}">
             <p th:text="${quiz.quiz}"></p>
             <label>
-                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="choice1"/>オプション1
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer1}" th:text="${quiz.answer1}"/>
             </label><br/>
             <label>
-                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="choice2"/>オプション2
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer2}" th:text="${quiz.answer2}"/>
             </label><br/>
             <label>
-                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="choice3"/>オプション3
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer3}" th:text="${quiz.answer3}"/>
             </label><br/>
             <label>
-                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" value="choice4"/>オプション4
+                <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer4}" th:text="${quiz.answer4}"/>
             </label><br/>
         </div>
         <button type="submit">解答を送信</button>

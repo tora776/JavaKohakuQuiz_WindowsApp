@@ -5,43 +5,43 @@ public class Quiz {
 	private int quiz_id;
 	private String quiz_template;
 	private String quiz_category;
-	private String choice_template1;
-	private String choice_template2;
-	private String choice_template3;
-	private String choice_template4;
+	private String answer1;
+	private String answer2;
+	private String answer3;
+	private String answer4;
 	private String created_date;
 	private String updated_date;
 	
-	public String getChoice_template1() {
-		return choice_template1;
+	public String getAnswer1() {
+		return answer1;
 	}
 
-	public void setChoice_template1(String choice_template1) {
-		this.choice_template1 = choice_template1;
+	public void setAnswer1(String answer1) {
+		this.answer1 = answer1;
 	}
 
-	public String getChoice_template2() {
-		return choice_template2;
+	public String getAnswer2() {
+		return answer2;
 	}
 
-	public void setChoice_template2(String choice_template2) {
-		this.choice_template2 = choice_template2;
+	public void setAnswer2(String answer2) {
+		this.answer2 = answer2;
 	}
 
-	public String getChoice_template3() {
-		return choice_template3;
+	public String getAnswer3() {
+		return answer3;
 	}
 
-	public void setChoice_template3(String choice_template3) {
-		this.choice_template3 = choice_template3;
+	public void setAnswer3(String answer3) {
+		this.answer3 = answer3;
 	}
 
-	public String getChoice_template4() {
-		return choice_template4;
+	public String getAnswer4() {
+		return answer4;
 	}
 
-	public void setChoice_template4(String choice_template4) {
-		this.choice_template4 = choice_template4;
+	public void setAnswer4(String answer4) {
+		this.answer4 = answer4;
 	}
 	
 	public String getQuiz() {

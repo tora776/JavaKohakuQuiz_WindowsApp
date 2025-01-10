@@ -32,6 +32,7 @@ public class IndexController {
         	quizList.add(quiz);
             // フォームをモデルに追加
 	        model.addAttribute("form", new Form()); 
+	        System.out.println(quiz.getAnswer1());
         }
 
         // クイズリストをモデルに追加

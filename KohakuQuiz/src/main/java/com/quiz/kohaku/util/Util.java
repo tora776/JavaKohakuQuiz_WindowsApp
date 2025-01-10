@@ -256,10 +256,10 @@ public class Util {
 	// 正誤含めた4件アーティストの選択肢を作成する
 	private Quiz getArtistSongChoices(Quiz quiz, List<Artist> artistChoices) {
 		// 選択肢にアーティストを格納する
-		quiz.setChoice_template1(artistChoices.get(0).getArtist_song());
-		quiz.setChoice_template2(artistChoices.get(1).getArtist_song());
-		quiz.setChoice_template3(artistChoices.get(2).getArtist_song());
-		quiz.setChoice_template4(artistChoices.get(3).getArtist_song());
+		quiz.setAnswer1(artistChoices.get(0).getArtist_song());
+		quiz.setAnswer2(artistChoices.get(1).getArtist_song());
+		quiz.setAnswer3(artistChoices.get(2).getArtist_song());
+		quiz.setAnswer4(artistChoices.get(3).getArtist_song());
 		
 		return quiz;
 	}
@@ -267,10 +267,10 @@ public class Util {
 	// 正誤含めた4件アーティストの選択肢を作成する
 	private Quiz getArtistAppearanceChoices(Quiz quiz, List<Artist> artistChoices) {
 		// 選択肢にアーティストを格納する
-		quiz.setChoice_template1(String.valueOf(artistChoices.get(0).getAppearance()));
-		quiz.setChoice_template1(String.valueOf(artistChoices.get(1).getAppearance()));
-		quiz.setChoice_template1(String.valueOf(artistChoices.get(2).getAppearance()));
-		quiz.setChoice_template1(String.valueOf(artistChoices.get(3).getAppearance()));
+		quiz.setAnswer1(String.valueOf(artistChoices.get(0).getAppearance()));
+		quiz.setAnswer1(String.valueOf(artistChoices.get(1).getAppearance()));
+		quiz.setAnswer1(String.valueOf(artistChoices.get(2).getAppearance()));
+		quiz.setAnswer1(String.valueOf(artistChoices.get(3).getAppearance()));
 		
 		return quiz;
 	}
