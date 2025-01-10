@@ -62,6 +62,7 @@ public class Util {
 		String year;
 		List<Artist> artistChoices = new ArrayList<>(3);
 		List<Host> hostChoices = new ArrayList<>(3);
+		
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); 
@@ -195,7 +196,7 @@ public class Util {
 				quiz = getHostNameChoices(quiz, hostChoices);
 				break;
 				
-			case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、a,bとあと一人は？
+			case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、次のうち誰？
 				host = getRandomHost(hosts);
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
@@ -304,7 +305,7 @@ public class Util {
 			List<Host> hostChoices = new ArrayList<Host>(3);
 			// 正解を格納
 			hostChoices.add(host);
-			 // ダミーを格納
+			// ダミーを格納
 		    while (hostChoices.size() < 4) { // 4件になるまでループ
 		        Host dummyHost = getRandomHost(hosts);
 		        // 重複チェックのためのフラグ
@@ -319,8 +320,6 @@ public class Util {
 		            hostChoices.add(dummyHost); // 重複がなければ追加
 		        }
 		    }
-			
-			
 			// リストをシャッフルする
 			Collections.shuffle(hostChoices);
 					
