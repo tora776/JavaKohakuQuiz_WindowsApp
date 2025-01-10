@@ -5,10 +5,32 @@
 <title>解答結果</title>
 </head>
 <body>
-    <h1>選択されたオプション</h1>
-    <ul>
-        <li th:each="answer, iterStat : ${answers}" th:text="'問題 ' + (${iterStat.index} + 1) + ': ' + ${answer}"></li>
-    </ul>
-    <a href="/">戻る</a>
+    <h1>解答結果</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>問題番号</th>
+                <th>問題文</th>
+                <th>選択肢</th>
+                <th>あなたの解答</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="quiz, iterStat : ${quizList}">
+                <td th:text="${iterStat.index + 1}">1</td>
+                <td th:text="${quiz.quiz}">問題文</td>
+                <td>
+                    <ul>
+                        <li th:text="${quiz.answer1}">選択肢</li>
+                        <li th:text="${quiz.answer2}">選択肢</li>
+                        <li th:text="${quiz.answer3}">選択肢</li>
+                        <li th:text="${quiz.answer4}">選択肢</li>
+                    </ul>
+                </td>
+                <td th:text="${answers[iterStat.index]}">ユーザーの解答</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/">トップに戻る</a>
 </body>
 </html>
