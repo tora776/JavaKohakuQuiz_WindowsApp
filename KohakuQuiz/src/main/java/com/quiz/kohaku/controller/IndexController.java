@@ -4,6 +4,8 @@ package com.quiz.kohaku.controller;
 import com.quiz.kohaku.model.Quiz;
 import com.quiz.kohaku.util.Util;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class IndexController {
     
 
     @GetMapping("/")
-    private String showForm(Model model) {
+    private String showForm(Model model, HttpSession session) {
         // 10個のクイズを作成
         List<Quiz> quizList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -34,8 +36,9 @@ public class IndexController {
 	        // model.addAttribute("form", new Form()); 
         }
         Form form = new Form();
-        form.setQuizList(quizList);
-        System.out.println(form.getQuizList().size());
+        // セッションにクイズリストを保存
+        session.setAttribute("quizList", quizList);
+        
         // クイズリストをモデルに追加
         model.addAttribute("quizList", quizList);
         model.addAttribute("form", form);
@@ -46,12 +49,14 @@ public class IndexController {
 	
 
 	@PostMapping("/submit")
-	public String submitForm(@ModelAttribute Form form, Model model) {
-		 // フォームから受け取った回答リストをモデルに追加
+	public String submitForm(@ModelAttribute Form form, Model model, HttpSession session) {
+		// フォームから受け取った回答リストをモデルに追加
 	    List<String> answers = form.getAnswers();
-	    List<Quiz> quizList = form.getQuizList();
+	    // セッションからクイズリストを取得
+	    @SuppressWarnings("unchecked")
+        List<Quiz> quizList = (List<Quiz>) session.getAttribute("quizList");
 	    // コメントアウトを外して再度quizListを取得した際エラーになってしまう。
-	    // System.out.println(form.getQuizList().size());
+	    // System.out.println(quizList.get(1).getQuiz());
 	    
 	    model.addAttribute("answers", answers);
 	    model.addAttribute("quizList", quizList);
