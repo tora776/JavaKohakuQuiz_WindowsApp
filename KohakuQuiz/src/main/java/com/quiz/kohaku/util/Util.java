@@ -61,6 +61,7 @@ public class Util {
 		String artist_song;
 		String year;
 		List<Artist> artistChoices = new ArrayList<>(3);
+		List<Host> hostChoices = new ArrayList<>(3);
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); 
@@ -87,11 +88,11 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				quiz_template = quiz_template.replace("{x}", appearance);
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
-				/*
+				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistAppearanceChoices(quiz, artistChoices);
-				*/
+				
 				
 				
 				// クイズを作成
@@ -120,11 +121,11 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				/*
+				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
-				*/
+				
 				break;
 				
 			case 4: // {アーティスト名}が紅白出場{x}回目で歌った楽曲は何？
@@ -137,11 +138,11 @@ public class Util {
 				quiz_template = quiz_template.replace("{x}", appearance);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				/*
+				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
-				*/
+				
 				break;
 				
 			case 5: // {アーティスト名}は{曲名}を{x}回歌っている？
@@ -165,6 +166,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 選択肢を作成
+				hostChoices = getHostChoices(host, hosts);
+				quiz = getHostNameChoices(quiz, hostChoices);
 				break;
 				
 			case 7: // {yyyy}年の紅白歌合戦の紅組司会は誰？
@@ -174,6 +178,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 選択肢を作成
+				hostChoices = getHostChoices(host, hosts);
+				quiz = getHostNameChoices(quiz, hostChoices);
 				break;
 				
 			case 8: // {yyyy}年の紅白歌合戦の白組司会は誰？
@@ -183,6 +190,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 選択肢を作成
+				hostChoices = getHostChoices(host, hosts);
+				quiz = getHostNameChoices(quiz, hostChoices);
 				break;
 				
 			case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、a,bとあと一人は？
@@ -192,6 +202,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 選択肢を作成
+				hostChoices = getHostChoices(host, hosts);
+				quiz = getHostNameChoices(quiz, hostChoices);
 				break;
 				
 			case 10: // {yyyy}年現在、歴代紅白歌合戦でどちらのほうが勝利回数が多い？
@@ -243,10 +256,20 @@ public class Util {
 		// 正解を格納
 		artistChoices.add(artist);
 		// ダミーを格納
-		for(int i = 0; i < artistChoices.size(); i++) {
-			Artist dummyArtist = getRandomArtist(artists);
-			artistChoices.add(dummyArtist);
-		}
+	    while (artistChoices.size() < 4) { // 4件になるまでループ
+	        Artist dummyArtist = getRandomArtist(artists);
+	        // 重複チェックのためのフラグ
+	        boolean isDuplicate = false;
+	        for (Artist existingArtist : artistChoices) {
+	            if (existingArtist.getArtist_name().equals(dummyArtist.getArtist_name())) {
+	                isDuplicate = true; // 重複を検出
+	                break; // ループを抜ける
+	            }
+	        }
+	        if (!isDuplicate) {
+	            artistChoices.add(dummyArtist); // 重複がなければ追加
+	        }
+	    }
 		// リストをシャッフルする
 		Collections.shuffle(artistChoices);
 				
@@ -268,10 +291,50 @@ public class Util {
 	private Quiz getArtistAppearanceChoices(Quiz quiz, List<Artist> artistChoices) {
 		// 選択肢にアーティストを格納する
 		quiz.setAnswer1(String.valueOf(artistChoices.get(0).getAppearance()));
-		quiz.setAnswer1(String.valueOf(artistChoices.get(1).getAppearance()));
-		quiz.setAnswer1(String.valueOf(artistChoices.get(2).getAppearance()));
-		quiz.setAnswer1(String.valueOf(artistChoices.get(3).getAppearance()));
+		quiz.setAnswer2(String.valueOf(artistChoices.get(1).getAppearance()));
+		quiz.setAnswer3(String.valueOf(artistChoices.get(2).getAppearance()));
+		quiz.setAnswer4(String.valueOf(artistChoices.get(3).getAppearance()));
 		
 		return quiz;
 	}
+	
+	// 正誤含めた4件司会者の選択肢を作成する
+		private List<Host> getHostChoices(Host host, List<Host> hosts) {
+			// 空のリストを作成
+			List<Host> hostChoices = new ArrayList<Host>(3);
+			// 正解を格納
+			hostChoices.add(host);
+			 // ダミーを格納
+		    while (hostChoices.size() < 4) { // 4件になるまでループ
+		        Host dummyHost = getRandomHost(hosts);
+		        // 重複チェックのためのフラグ
+		        boolean isDuplicate = false;
+		        for (Host existingHost : hostChoices) {
+		            if (existingHost.getHost_name().equals(dummyHost.getHost_name())) {
+		                isDuplicate = true; // 重複を検出
+		                break; // ループを抜ける
+		            }
+		        }
+		        if (!isDuplicate) {
+		            hostChoices.add(dummyHost); // 重複がなければ追加
+		        }
+		    }
+			
+			
+			// リストをシャッフルする
+			Collections.shuffle(hostChoices);
+					
+			return hostChoices;
+		}
+		
+		// 正誤含めた4件アーティストの選択肢を作成する
+		private Quiz getHostNameChoices(Quiz quiz, List<Host> hostChoices) {
+			// 選択肢にアーティストを格納する
+			quiz.setAnswer1(hostChoices.get(0).getHost_name());
+			quiz.setAnswer2(hostChoices.get(1).getHost_name());
+			quiz.setAnswer3(hostChoices.get(2).getHost_name());
+			quiz.setAnswer4(hostChoices.get(3).getHost_name());
+			
+			return quiz;
+		}
 }

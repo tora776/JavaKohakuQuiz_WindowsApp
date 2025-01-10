@@ -55,8 +55,6 @@ public class IndexController {
 	    // セッションからクイズリストを取得
 	    @SuppressWarnings("unchecked")
         List<Quiz> quizList = (List<Quiz>) session.getAttribute("quizList");
-	    // コメントアウトを外して再度quizListを取得した際エラーになってしまう。
-	    // System.out.println(quizList.get(1).getQuiz());
 	    
 	    model.addAttribute("answers", answers);
 	    model.addAttribute("quizList", quizList);
