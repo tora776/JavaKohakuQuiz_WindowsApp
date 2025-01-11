@@ -41,7 +41,6 @@ public class Util {
 		Random random = new Random();
 		int quiz_id = random.nextInt(quizzes.size());
 		// クイズを作成
-		
 		Quiz quiz = new Quiz();
 		quiz = buildQuizFromTemplate(quiz_id, quizzes);
 		// 選択肢を作成
@@ -80,7 +79,7 @@ public class Util {
 		// テンプレートに値を代入
 		switch(quiz_id + 1) {
 		
-			case 1: // {yyyy}年現在、{アーティスト名}は過去{x}回紅白に出場している。
+			case 1: // {yyyy}年現在、{アーティスト名}は過去何回紅白に出場している？
 				// アーティスト名・出場回数を取得
 				artist = getRandomArtist(artists);
 				artist_name = artist.getArtist_name();
@@ -93,14 +92,14 @@ public class Util {
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistAppearanceChoices(quiz, artistChoices);
-				
-				
-				
-				// クイズを作成
+
+				// 作成したクイズを格納
 				quiz.setQuiz(quiz_template);
+				// 正解を格納
+				quiz.setCorrectAnswer(appearance);
 				break;
 				
-			case 2: // {yyyy}年現在、{アーティスト名_1}は{アーティスト名_2}より紅白の出場回数が多い。
+			case 2: // {yyyy}年現在、{アーティスト名_1}は{アーティスト名_2}より紅白の出場回数が多い？
 				// アーティスト名を取得
 				artist = getRandomArtist(artists);
 				artist_name = artist.getArtist_name();
@@ -110,8 +109,16 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名_1}", artist_name);
 				quiz_template = quiz_template.replace("{アーティスト名_2}", artist2_name);
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
-				// クイズを作成
+				// 作成したクイズを格納
 				quiz.setQuiz(quiz_template);
+				// 正解を格納
+				if (artist.getAppearance() > artist2.getAppearance()) {
+					quiz.setCorrectAnswer("多い");
+				} else if (artist.getAppearance() < artist2.getAppearance()) {
+					quiz.setCorrectAnswer("少ない");
+				} else {
+					quiz.setCorrectAnswer("同じ");
+				}
 				break;
 				
 			case 3: // {アーティスト名}が紅白で初めて歌った楽曲は何？
@@ -122,7 +129,6 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
@@ -139,14 +145,13 @@ public class Util {
 				quiz_template = quiz_template.replace("{x}", appearance);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
-				
+				quiz.setCorrectAnswer(artist.getArtist_song());
 				break;
 				
-			case 5: // {アーティスト名}は{曲名}を{x}回歌っている？
+			case 5: // {アーティスト名}は{曲名}を何回歌っている？
 				// アーティスト名を取得
 				artist = getRandomArtist(artists);
 				artist_name = artist.getArtist_name();
@@ -154,8 +159,7 @@ public class Util {
 				appearance = String.valueOf(artist.getAppearance());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
-				quiz_template = quiz_template.replace("{曲名}", artist_song); // 出力されず
-				quiz_template = quiz_template.replace("{x}", appearance);
+				quiz_template = quiz_template.replace("{曲名}", artist_song); 
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				break;
@@ -170,6 +174,7 @@ public class Util {
 				// 選択肢を作成
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
+				quiz.setCorrectAnswer(host.getHost_name());
 				break;
 				
 			case 7: // {yyyy}年の紅白歌合戦の紅組司会は誰？
@@ -182,6 +187,7 @@ public class Util {
 				// 選択肢を作成
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
+				quiz.setCorrectAnswer(host.getHost_name());
 				break;
 				
 			case 8: // {yyyy}年の紅白歌合戦の白組司会は誰？
@@ -194,6 +200,7 @@ public class Util {
 				// 選択肢を作成
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
+				quiz.setCorrectAnswer(host.getHost_name());
 				break;
 				
 			case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、次のうち誰？
@@ -206,6 +213,7 @@ public class Util {
 				// 選択肢を作成
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
+				quiz.setCorrectAnswer(host.getHost_name());
 				break;
 				
 			case 10: // {yyyy}年現在、歴代紅白歌合戦でどちらのほうが勝利回数が多い？
@@ -213,14 +221,14 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				quiz.setCorrectAnswer(getWinnerTeamHistory(results));
 				break;
-			case 11: // 昨年{yyyy}年の紅白歌合戦の勝利チームは？
-				result = getRandomResult(results);
+			case 11: // 昨年の紅白歌合戦の勝利チームは？
+				result = results.get(0);
 				year = String.valueOf(result.getYear());
-				// テンプレートを置き換え
-				quiz_template = quiz_template.replace("{yyyy}年", "");
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				quiz.setCorrectAnswer(result.getWinner());
 				break;
 			default:
 		}
@@ -335,5 +343,34 @@ public class Util {
 			quiz.setAnswer4(hostChoices.get(3).getHost_name());
 			
 			return quiz;
+		}
+		
+		private String getWinnerTeamHistory(List<Result> results) {
+			List<String> winners = new ArrayList<String>(results.size());
+			// 紅白の勝敗のみを格納したリストwinnersを作成する
+			for (int i = 0; i < results.size(); i++) {
+				winners.add(results.get(i).getWinner());
+			}
+			// 初期化
+			int countRedTeam = 0;
+			int countWhiteTeam = 0;
+			// 紅組と白組の個数を取得する
+			for (String winner : winners) {
+				if("紅組".equals(winner)) {
+					countRedTeam++;
+				} else if("白組".equals(winner)) {
+					countWhiteTeam++;
+				}
+			}
+			// 個数が多い方を返す
+			if (countRedTeam > countWhiteTeam) {
+				return "紅組";
+			} else if (countRedTeam < countWhiteTeam) {
+				return "白組";
+			} else if (countRedTeam == countWhiteTeam) {
+				return "同じ";
+			}
+			return null;
+
 		}
 }

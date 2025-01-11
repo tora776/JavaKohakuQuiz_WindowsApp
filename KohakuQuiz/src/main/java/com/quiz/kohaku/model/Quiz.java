@@ -2,6 +2,7 @@ package com.quiz.kohaku.model;
 
 public class Quiz {
 	private String quiz; // Java内で使用。DB内にQuizカラムはない。
+	private String correctAnswer; // クイズの正解。DB内にcorrectAnswerのカラムはない
 	private int quiz_id;
 	private String quiz_template;
 	private String quiz_category;
@@ -12,6 +13,16 @@ public class Quiz {
 	private String created_date;
 	private String updated_date;
 	
+	
+	
+	public String getCorrectAnswer() {
+		return correctAnswer;
+	}
+
+	public void setCorrectAnswer(String correctAnswer) {
+		this.correctAnswer = correctAnswer;
+	}
+
 	public String getAnswer1() {
 		return answer1;
 	}

@@ -13,6 +13,7 @@
                 <th>問題文</th>
                 <th>選択肢</th>
                 <th>あなたの解答</th>
+                <th>正解</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                     </ul>
                 </td>
                 <td th:text="${answers[iterStat.index]}">ユーザーの解答</td>
+                <td th:text="${quiz.correctAnswer}">正解</td>
             </tr>
         </tbody>
     </table>
