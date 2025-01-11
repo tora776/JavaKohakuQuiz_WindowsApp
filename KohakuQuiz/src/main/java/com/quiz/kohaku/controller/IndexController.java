@@ -55,6 +55,10 @@ public class IndexController {
 	    // セッションからクイズリストを取得
 	    @SuppressWarnings("unchecked")
         List<Quiz> quizList = (List<Quiz>) session.getAttribute("quizList");
+	    // answersの要素数を追加する。問題10のラジオボタンが押下されていないと、answersの要素数が足りずエラーになるため。
+	    while (answers.size() < 10) {
+	    	answers.add(null);
+	    }
 	    
 	    model.addAttribute("answers", answers);
 	    model.addAttribute("quizList", quizList);

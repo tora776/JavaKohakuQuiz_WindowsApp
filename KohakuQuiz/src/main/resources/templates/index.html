@@ -10,7 +10,9 @@
         <!-- クイズを繰り返し表示 -->
         <div th:each="quiz, iterStat : ${quizList}">
             <p th:text="${quiz.quiz}"></p>
-            <input hidden="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="未回答">
+            <!-- 問題10のラジオボタンが空の場合、answersの要素数が足りないため作成したが、result.htmlのあなたの解答欄に「,」が挿入されてしまう
+            <input type="hidden" th:field="*{answers[__${iterStat.index}__]}" value="" />
+              -->
             <label>
                 <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer1}" th:text="${quiz.answer1}"/>
             </label><br/>
