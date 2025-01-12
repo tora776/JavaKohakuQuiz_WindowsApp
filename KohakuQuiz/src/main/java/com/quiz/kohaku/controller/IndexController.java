@@ -48,6 +48,7 @@ public class IndexController {
 		
 	
 
+
 	@PostMapping("/submit")
 	public String submitForm(@ModelAttribute Form form, Model model, HttpSession session) {
 		// フォームから受け取った回答リストをモデルに追加
@@ -55,9 +56,20 @@ public class IndexController {
 	    // セッションからクイズリストを取得
 	    @SuppressWarnings("unchecked")
         List<Quiz> quizList = (List<Quiz>) session.getAttribute("quizList");
-	    // answersの要素数を追加する。問題10のラジオボタンが押下されていないと、answersの要素数が足りずエラーになるため。
+	    
+	    if(answers == null) {
+	    	answers = new ArrayList<>();
+	    }
+	    
+	    // nullの項目に未回答と記載する
+	    for (int i = 0; i < answers.size(); i++) {
+	        if (answers.get(i) == null) {
+	            answers.set(i, "未回答");
+	        }
+	    }
+	    // answersリストが10件ないとエラーが発生する
 	    while (answers.size() < 10) {
-	    	answers.add(null);
+	    	answers.add("未回答");
 	    }
 	    
 	    model.addAttribute("answers", answers);
