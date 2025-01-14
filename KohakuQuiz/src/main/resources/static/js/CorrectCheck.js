@@ -2,6 +2,7 @@
  * 
  */
 'use strict'
+// 正誤チェックを行う
 function correctCheck(corrections){
 	var table = document.getElementById("table");
 	var tr = table.tBodies[0].rows;
@@ -9,9 +10,9 @@ function correctCheck(corrections){
 	
 	for(let i = 0; i < corrections.length; i++){
 		if(corrections[i] === true){
-			// img_element = createCorrectImage();
+			var img_element = createCorrectImage();
 			tr[i].style.background = "#F0B9B9";
-			// tr[i].cells[1].appendChild(img_element);
+			tr[i].cells[1].appendChild(img_element);
 			console.log("true");
 		} else {
 			var img_element = createInCorrectImage();
@@ -22,8 +23,19 @@ function correctCheck(corrections){
 	}
 }
 
+// 「〇」の画像要素を作成する
+function createCorrectImage(){
+	let img_element = document.createElement('img');
+	img_element.src = '../img/correct.png';
+	img_element.alt = '正解';
+	img_element.width = 100;
+	img_element.height = 100;
+	img_element.classList.add("img");
+	
+	return img_element;
+}
 
-
+// 「×」の画像要素を作成する
 function createInCorrectImage(){
 	let img_element = document.createElement('img');
 	img_element.src = '../img/incorrect.png';
@@ -31,14 +43,7 @@ function createInCorrectImage(){
 	img_element.width = 100;
 	img_element.height = 100;
 	img_element.classList.add("img");
-	// source要素を追加
-	// let source_element = document.createElement('source');
-	// source_element.srcset = '..img/incorrect.png';
-	// source_element.media = '(min-width: 800px)';
-
-	// picture要素にimg要素とsource要素を追加
-	// picture_element.appendChild(img_element);
-	// picture_element.appendChild(source_element);
+	
 	return img_element;
 }
 
