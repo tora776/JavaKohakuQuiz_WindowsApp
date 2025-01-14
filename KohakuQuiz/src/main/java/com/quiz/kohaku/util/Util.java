@@ -59,6 +59,8 @@ public class Util {
 		String artist2_name;
 		String artist_song;
 		String year;
+		String correctAnswer;
+		String query;
 		List<Artist> artistChoices = new ArrayList<>(3);
 		List<Host> hostChoices = new ArrayList<>(3);
 		
@@ -132,6 +134,9 @@ public class Util {
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
+				// 正解をDBから取得。case3のため、getCorrectAnswerの引数に3を使用。
+				correctAnswer = quizService.getCorrectAnswer(3, artist_name);
+				quiz.setCorrectAnswer(correctAnswer);
 				
 				break;
 				
@@ -162,6 +167,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{曲名}", artist_song); 
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case5のため、getCorrectAnswerの引数に5を使用。
+				correctAnswer = quizService.getCorrectAnswer(5, artist_name, artist_song);
+				quiz.setCorrectAnswer(correctAnswer);
 				break;
 				
 			case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
