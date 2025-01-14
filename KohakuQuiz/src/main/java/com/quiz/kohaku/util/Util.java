@@ -60,7 +60,6 @@ public class Util {
 		String artist_song;
 		String year;
 		String correctAnswer;
-		String query;
 		List<Artist> artistChoices = new ArrayList<>(3);
 		List<Host> hostChoices = new ArrayList<>(3);
 		
@@ -92,8 +91,9 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
 				
 				// 選択肢を作成
-				artistChoices = getArtistChoices(artist, artists);
-				quiz = getArtistAppearanceChoices(quiz, artistChoices);
+				// artistChoices = getArtistChoices(artist, artists);
+				List<String> appearances = getAppearanceChoices(appearance);
+				quiz = getArtistAppearanceChoices(quiz, appearances);
 
 				// 作成したクイズを格納
 				quiz.setQuiz(quiz_template);
@@ -259,13 +259,37 @@ public class Util {
 		return host;
 	}
 	
-	private Result getRandomResult(List<Result> results) {
+	private List<String> getAppearanceChoices(String appearance){
+		// 空のリストを作成
+		List<String> appearances = new ArrayList<>(3);
+		// 正解を格納
+		appearances.add(appearance);
+		// ダミーを格納
 		Random random = new Random();
-		int result_id = random.nextInt(results.size());
-		Result result = results.get(result_id);
-		return result;
+		while(appearances.size() < 4) {
+			// 正しい出場回数が+-5回となるように設定。appearanceが負の数の場合は追加しない。
+			int dummyAppearance = Integer.valueOf(appearance) + random.nextInt(11) - 5;
+			// 重複チェックのためのフラグ
+	        boolean isDuplicate = false;
+	        for (String existingAppearance : appearances) {
+	            if (existingAppearance.equals(String.valueOf(dummyAppearance))) {
+	                isDuplicate = true; // 重複を検出
+	                break; // ループを抜ける
+	            }
+	        }
+	        // 重複がない場合
+	        if (!isDuplicate) {
+	        	// ダミーの値が正の数であればリストに追加
+				if(dummyAppearance > 0) {
+					appearances.add(String.valueOf(dummyAppearance));
+				}
+	        }			
+		}
+		// リストをシャッフルする
+		Collections.shuffle(appearances);
+		
+		return appearances;
 	}
-	
 	// 正誤含めた4件アーティストの選択肢を作成する
 	private List<Artist> getArtistChoices(Artist artist, List<Artist> artists) {
 		// 空のリストを作成
@@ -305,12 +329,12 @@ public class Util {
 	}
 	
 	// 正誤含めた4件アーティストの選択肢を作成する
-	private Quiz getArtistAppearanceChoices(Quiz quiz, List<Artist> artistChoices) {
+	private Quiz getArtistAppearanceChoices(Quiz quiz, List<String> appearances) {
 		// 選択肢にアーティストを格納する
-		quiz.setAnswer1(String.valueOf(artistChoices.get(0).getAppearance()));
-		quiz.setAnswer2(String.valueOf(artistChoices.get(1).getAppearance()));
-		quiz.setAnswer3(String.valueOf(artistChoices.get(2).getAppearance()));
-		quiz.setAnswer4(String.valueOf(artistChoices.get(3).getAppearance()));
+		quiz.setAnswer1(appearances.get(0));
+		quiz.setAnswer2(appearances.get(1));
+		quiz.setAnswer3(appearances.get(2));
+		quiz.setAnswer4(appearances.get(3));
 		
 		return quiz;
 	}
