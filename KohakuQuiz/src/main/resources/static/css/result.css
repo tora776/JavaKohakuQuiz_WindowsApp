@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+td{
+	vertical-align: middle;
+	position: relative
+}
+td img{
+	display: inline-block;
+	vertical-align: middle;
+	opacity: 0.5;
+}

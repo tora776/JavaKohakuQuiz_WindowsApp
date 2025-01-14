@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-<script th:src="@{/js/CorrectCheck.js}"></script>
-<script th:inline="javascript">
-	const corrections = /*[[${corrections}]]*/"corrections";
-	correctCheck(corrections);
-</script>
+<script defer th:src="@{/js/CorrectCheck.js}"></script>
+<link th:href="@{/css/result.css}" rel="stylesheet">
 <meta charset="UTF-8">
 <title>解答結果</title>
 </head>
