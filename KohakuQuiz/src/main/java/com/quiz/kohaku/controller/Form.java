@@ -3,11 +3,9 @@ package com.quiz.kohaku.controller;
 
 import java.util.List;
 
-import com.quiz.kohaku.model.Quiz;
-
 public class Form {
     private List<String> answers;
-    private List<Quiz> quizList;
+    private List<Boolean> corrections;
 
     public List<String> getAnswers() {
         return answers;
@@ -16,12 +14,15 @@ public class Form {
     public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
-    
-    public List<Quiz> getQuizList() {
-        return quizList;
-    }
 
-    public void setQuizList(List<Quiz> quizList) {
-        this.quizList = quizList;
-    }
+	public List<Boolean> getCorrections() {
+		return corrections;
+	}
+
+	public void setCorrections(List<Boolean> corrections) {
+		this.corrections = corrections;
+	}
+    
+    
+
 }

@@ -91,7 +91,6 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
 				
 				// 選択肢を作成
-				// artistChoices = getArtistChoices(artist, artists);
 				List<String> appearances = getAppearanceChoices(appearance);
 				quiz = getArtistAppearanceChoices(quiz, appearances);
 
@@ -131,12 +130,15 @@ public class Util {
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				// 選択肢を作成
-				artistChoices = getArtistChoices(artist, artists);
-				quiz = getArtistSongChoices(quiz, artistChoices);
 				// 正解をDBから取得。case3のため、getCorrectAnswerの引数に3を使用。
 				correctAnswer = quizService.getCorrectAnswer(3, artist_name);
 				quiz.setCorrectAnswer(correctAnswer);
+				// 正解をartist_songに格納
+				artist.setArtist_song(correctAnswer);
+				// 選択肢を作成
+				artistChoices = getArtistChoices(artist, artists);
+				quiz = getArtistSongChoices(quiz, artistChoices);
+				
 				
 				break;
 				

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
+<script th:src="@{/js/CorrectCheck.js}"></script>
+<script th:inline="javascript">
+	const corrections = /*[[${corrections}]]*/"corrections";
+	correctCheck(corrections);
+</script>
 <meta charset="UTF-8">
 <title>解答結果</title>
 </head>
 <body>
     <h1>解答結果</h1>
-    <table border="1">
+    <table border="1" id="table">
         <thead>
             <tr>
                 <th>問題番号</th>
@@ -34,5 +39,7 @@
         </tbody>
     </table>
     <a href="/">トップに戻る</a>
+    <!-- correctionsデータを埋め込む -->
+    <div id="correctionsData" th:utext="${corrections}" style="display:none;"></div>
 </body>
 </html>

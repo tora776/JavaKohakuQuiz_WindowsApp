@@ -32,8 +32,6 @@ public class IndexController {
         	// クイズを作成
         	Quiz quiz = util.GenerateQuizzes();
         	quizList.add(quiz);
-            // フォームをモデルに追加
-	        // model.addAttribute("form", new Form()); 
         }
         Form form = new Form();
         // セッションにクイズリストを保存
@@ -53,12 +51,17 @@ public class IndexController {
 	public String submitForm(@ModelAttribute Form form, Model model, HttpSession session) {
 		// フォームから受け取った回答リストをモデルに追加
 	    List<String> answers = form.getAnswers();
+	    List<Boolean> corrections = form.getCorrections();
 	    // セッションからクイズリストを取得
 	    @SuppressWarnings("unchecked")
         List<Quiz> quizList = (List<Quiz>) session.getAttribute("quizList");
 	    
 	    if(answers == null) {
 	    	answers = new ArrayList<>();
+	    }
+	    
+	    if(corrections == null) {
+	    	corrections = new ArrayList<>();
 	    }
 	    
 	    // nullの項目に未回答と記載する
@@ -72,7 +75,17 @@ public class IndexController {
 	    	answers.add("未回答");
 	    }
 	    
+	    // 正誤チェック
+	    for (int i = 0; i < answers.size(); i++) {
+	    	boolean bool = true;
+	    	if (!answers.get(i).equals(quizList.get(i).getCorrectAnswer())) {
+	    		bool = false;
+	    	} 
+	    	corrections.add(bool);
+	    }
+	    
 	    model.addAttribute("answers", answers);
+	    model.addAttribute("corrections", corrections);
 	    model.addAttribute("quizList", quizList);
 
 	    return "result";
