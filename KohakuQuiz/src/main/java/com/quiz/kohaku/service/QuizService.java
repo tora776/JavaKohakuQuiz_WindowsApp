@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.quiz.kohaku.model.Host;
 import com.quiz.kohaku.model.Quiz;
 import com.quiz.kohaku.repository.IQuizDao;
 
@@ -25,6 +26,10 @@ public class QuizService {
 	
 	public String getArtistCorrectAnswer(int caseNumber, String... strings ) {
 	    return dao.getArtistCorrectAnswer(caseNumber, strings);
+	}
+	
+	public List<Host> getHostCorrectAnswer(int caseNumber, String... strings ) {
+	    return dao.getHostCorrectAnswer(caseNumber, strings);
 	}
 	
 	

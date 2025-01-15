@@ -182,46 +182,60 @@ public class Util {
 				List<String> countSong = getRandomIntChoices(correctAnswer);
 				quiz = getArtistAppearanceChoices(quiz, countSong);
 				
-				
 				break;
 				
 			case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
-				host = getRandomHost(hosts, "総合司会");
-				year = String.valueOf(host.getYear());
+				int host_year = getRandomYear(hosts);
+				year = String.valueOf(host_year);
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に6を使用。
+				List<Host> correctHosts = quizService.getHostCorrectAnswer(6, year, "総合司会");
+				// correctHostsがnullの場合
+				if(correctHosts.size() == 0) {
+					Host nullHost = new Host();
+					nullHost.setHost_name("該当の司会なし");
+					correctHosts.add(nullHost);
+				} 
+				// 正解を格納
+				hostChoices.add(correctHosts.get(0));
+				
 				// 選択肢を作成
-				hostChoices = getHostChoices(host, hosts);
+				hostChoices = getHostChoices(correctHosts, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
-				quiz.setCorrectAnswer(host.getHost_name());
+				quiz.setCorrectAnswer(correctHosts.get(0).getHost_name());
 				break;
 				
 			case 7: // {yyyy}年の紅白歌合戦の紅組司会(女性司会)は誰？
-				host = getRandomHost(hosts, "紅組司会", "女性司会");
+				host = getRandomHost(hosts);
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に7を使用。
+				correctHosts = quizService.getHostCorrectAnswer(7, year, "紅組司会", "女性司会");
 				// 選択肢を作成
-				hostChoices = getHostChoices(host, hosts);
+				hostChoices = getHostChoices(correctHosts, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
-				quiz.setCorrectAnswer(host.getHost_name());
+				quiz.setCorrectAnswer(correctHosts.get(0).getHost_name());
 				break;
 				
 			case 8: // {yyyy}年の紅白歌合戦の白組司会は誰？
-				host = getRandomHost(hosts, "白組司会", "男性司会");
+				host = getRandomHost(hosts);
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に8を使用。
+				correctHosts = quizService.getHostCorrectAnswer(8, year, "白組司会", "男性司会");
 				// 選択肢を作成
-				hostChoices = getHostChoices(host, hosts);
+				hostChoices = getHostChoices(correctHosts, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
-				quiz.setCorrectAnswer(host.getHost_name());
+				quiz.setCorrectAnswer(correctHosts.get(0).getHost_name());
 				break;
 				
 			case 9: // {yyyy}年の紅白歌合戦で司会を務めたのは、次のうち誰？
@@ -231,10 +245,12 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に9を使用。
+				correctHosts = quizService.getHostCorrectAnswer(9, year);
 				// 選択肢を作成
-				hostChoices = getHostChoices(host, hosts);
+				hostChoices = getHostChoices(correctHosts, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
-				quiz.setCorrectAnswer(host.getHost_name());
+				quiz.setCorrectAnswer(correctHosts.get(0).getHost_name());
 				break;
 				
 			case 10: // {yyyy}年現在、歴代紅白歌合戦でどちらのほうが勝利回数が多い？
@@ -274,7 +290,7 @@ public class Util {
 	}
 	
 	
-	private Host getRandomHost(List<Host> hosts, String... host_roles) {
+	private Host getRandomHost(List<Host> hosts) {
 		Random random = new Random();
 		int host_id = random.nextInt(hosts.size());
 		Host host = hosts.get(host_id);
@@ -364,18 +380,18 @@ public class Util {
 	}
 	
 	// 正誤含めた4件司会者の選択肢を作成する
-		private List<Host> getHostChoices(Host host, List<Host> hosts) {
+		private List<Host> getHostChoices(List<Host> correctHosts, List<Host> hosts) {
 			// 空のリストを作成
 			List<Host> hostChoices = new ArrayList<Host>(3);
 			// 正解を格納
-			hostChoices.add(host);
+			hostChoices.add(correctHosts.get(0));
 			// ダミーを格納
 		    while (hostChoices.size() < 4) { // 4件になるまでループ
 		        Host dummyHost = getRandomHost(hosts);
 		        // 重複チェックのためのフラグ
 		        boolean isDuplicate = false;
 		        for (Host existingHost : hostChoices) {
-		            if (existingHost.equals(dummyHost.getHost_name())) {
+		            if (existingHost.equals(dummyHost)) {
 		                isDuplicate = true; // 重複を検出
 		                break; // ループを抜ける
 		            }
