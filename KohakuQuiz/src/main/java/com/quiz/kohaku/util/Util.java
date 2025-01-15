@@ -59,7 +59,7 @@ public class Util {
 		String artist2_name;
 		String artist_song;
 		String year;
-		List<String> correctAnswer;
+		String correctAnswer;
 		List<Artist> artistChoices = new ArrayList<>(3);
 		List<Host> hostChoices = new ArrayList<>(3);
 		
@@ -131,11 +131,15 @@ public class Util {
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				// 正解をDBから取得。case3のため、getCorrectAnswerの引数に3を使用。
-				correctAnswer = quizService.getCorrectAnswer(3, artist_name);
-				if(correctAnswer.size() == 1) {
-					quiz.setCorrectAnswer(correctAnswer.get(0));
+				correctAnswer = quizService.getArtistCorrectAnswer(3, artist_name);
+				if(correctAnswer != "") {
+					quiz.setCorrectAnswer(correctAnswer);
 					// 正解をartist_songに格納
-					artist.setArtist_song(correctAnswer.get(0));
+					artist.setArtist_song(correctAnswer);
+				} else {
+					quiz.setCorrectAnswer(correctAnswer);
+					// 正解をartist_songに格納
+					artist.setArtist_song("答えなし");
 				}
 				
 				// 選択肢を作成
@@ -173,13 +177,11 @@ public class Util {
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				// 正解をDBから取得。case5のため、getCorrectAnswerの引数に5を使用。
-				correctAnswer = quizService.getCorrectAnswer(5, artist_name, artist_song);
-				if(correctAnswer.size() == 1) {
-					quiz.setCorrectAnswer(correctAnswer.get(0));
-					// 選択肢を作成
-					List<String> countSong = getRandomIntChoices(correctAnswer.get(0));
-					quiz = getArtistAppearanceChoices(quiz, countSong);
-				}
+				correctAnswer = quizService.getArtistCorrectAnswer(5, artist_name, artist_song);
+				// 選択肢を作成
+				List<String> countSong = getRandomIntChoices(correctAnswer);
+				quiz = getArtistAppearanceChoices(quiz, countSong);
+				
 				
 				break;
 				
@@ -190,10 +192,7 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
-				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に5を使用。
-				//correctAnswer = quizService.getCorrectAnswer(6, year);
 				// 選択肢を作成
-				// hostChoices = getHostChoices(correctAnswer, hosts);
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
 				quiz.setCorrectAnswer(host.getHost_name());
@@ -266,22 +265,19 @@ public class Util {
 		return artist;
 	}
 	
+	private int getRandomYear(List<Host> hosts) {
+		Random random = new Random();
+		int host_id = random.nextInt(hosts.size());
+		Host host = hosts.get(host_id);
+	
+		return host.getYear();
+	}
+	
+	
 	private Host getRandomHost(List<Host> hosts, String... host_roles) {
 		Random random = new Random();
 		int host_id = random.nextInt(hosts.size());
 		Host host = hosts.get(host_id);
-		/*
-		// 可変長引数host_roleの要素数を確認し、該当する司会者を取得
-		if(host_roles.length == 1) {
-			while(host.getHost_role().equals(host_roles[0])) {
-				host = hosts.get(host_id);
-			}
-		} else if(host_roles.length > 1) {
-			while(host.getHost_role().equals(host_roles[0]) || host.getHost_role().equals(host_roles[1])) {
-				host = hosts.get(host_id);
-			}
-		}
-		*/
 	
 		return host;
 	}
@@ -379,18 +375,19 @@ public class Util {
 		        // 重複チェックのためのフラグ
 		        boolean isDuplicate = false;
 		        for (Host existingHost : hostChoices) {
-		            if (existingHost.getHost_name().equals(dummyHost.getHost_name())) {
+		            if (existingHost.equals(dummyHost.getHost_name())) {
 		                isDuplicate = true; // 重複を検出
 		                break; // ループを抜ける
 		            }
 		        }
+		        // 重複がない場合
 		        if (!isDuplicate) {
 		            hostChoices.add(dummyHost); // 重複がなければ追加
 		        }
 		    }
 			// リストをシャッフルする
 			Collections.shuffle(hostChoices);
-					
+				
 			return hostChoices;
 		}
 		

@@ -59,10 +59,9 @@ public class QuizDao implements IQuizDao {
 	}
 	
 	@Override
-	public List<String> getCorrectAnswer(int caseNumber, String... strings) {
+	public String getArtistCorrectAnswer(int caseNumber, String... strings) {
 		StringBuilder sqlBuilder = new StringBuilder();
 		String sql;
-		List<String> list = new ArrayList<>();
 		switch(caseNumber) {
 			case 3: // {アーティスト名}が紅白で初めて歌った楽曲は何？
 				// 本来はappearance = 1が望ましいが、紅白歌合戦に関する全データを格納できていないため、appearanceが最小のときの楽曲で妥協している。 
@@ -75,8 +74,7 @@ public class QuizDao implements IQuizDao {
 					ps.setString(2, strings[0]);
 					ResultSet result = ps.executeQuery();
 					if (result.next()) {
-						list.add(result.getString("artist_song"));
-						return list;
+						return result.getString("artist_song");
 					}
 				} catch(SQLException e) {
 					e.printStackTrace();
@@ -94,8 +92,7 @@ public class QuizDao implements IQuizDao {
 					ps.setString(2, strings[1]);
 					ResultSet result = ps.executeQuery();
 					if (result.next()) {
-						list.add(result.getString("count"));
-						return list;
+						return result.getString("count");
 					}
 				} catch(SQLException e) {
 					e.printStackTrace();
@@ -112,16 +109,15 @@ public class QuizDao implements IQuizDao {
 					ps.setString(2, "総合司会"); // "総合司会"
 					ResultSet result = ps.executeQuery();
 					if (result.next()) {
-						list.add(result.getString("host_name"));
-						return list;
+						return result.getString("host_name");
 					} else {
-						list.add("総合司会なし");
+						return "総合司会なし";
 					}
 				} catch(SQLException e) {
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
 		}
-		return list;
+		return "";
 	}
 }
