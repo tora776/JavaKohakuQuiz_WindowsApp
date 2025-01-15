@@ -380,32 +380,43 @@ public class Util {
 	}
 	
 	// 正誤含めた4件司会者の選択肢を作成する
-		private List<Host> getHostChoices(List<Host> correctHosts, List<Host> hosts) {
-			// 空のリストを作成
-			List<Host> hostChoices = new ArrayList<Host>(3);
-			// 正解を格納
-			hostChoices.add(correctHosts.get(0));
-			// ダミーを格納
-		    while (hostChoices.size() < 4) { // 4件になるまでループ
-		        Host dummyHost = getRandomHost(hosts);
-		        // 重複チェックのためのフラグ
-		        boolean isDuplicate = false;
-		        for (Host existingHost : hostChoices) {
-		            if (existingHost.equals(dummyHost)) {
-		                isDuplicate = true; // 重複を検出
-		                break; // ループを抜ける
-		            }
-		        }
-		        // 重複がない場合
-		        if (!isDuplicate) {
-		            hostChoices.add(dummyHost); // 重複がなければ追加
-		        }
-		    }
-			// リストをシャッフルする
-			Collections.shuffle(hostChoices);
-				
-			return hostChoices;
-		}
+	private List<Host> getHostChoices(List<Host> correctHosts, List<Host> hosts) {
+		// 空のリストを作成
+		List<Host> hostChoices = new ArrayList<Host>(3);
+		Random random = new Random();
+		int correctHost = random.nextInt(correctHosts.size());
+		// 正解を格納
+		hostChoices.add(correctHosts.get(correctHost));
+		// ダミーを格納
+	    while (hostChoices.size() < 4) { // 4件になるまでループ
+	        Host dummyHost = getRandomHost(hosts);
+	        // 重複チェックのためのフラグ
+	        boolean isDuplicate = false;
+	        // 選択肢と一致していないか確認する
+	        for (Host existingHost : hostChoices) {
+	            if (existingHost.getHost_name().equals(dummyHost.getHost_name())) {
+	                isDuplicate = true; // 重複を検出
+	                break; // ループを抜ける
+	            }
+	        }
+	        // 別解が選択肢に混じらないか確認する
+            for(Host anotherCorrect : correctHosts) {
+            	if(anotherCorrect.getHost_name().equals(dummyHost.getHost_name())) {
+            		isDuplicate = true;
+            		break;
+            	}
+            }
+	        
+	        // 重複がない場合
+	        if (!isDuplicate) {
+	            hostChoices.add(dummyHost); // 重複がなければ追加
+	        }
+	    }
+		// リストをシャッフルする
+		Collections.shuffle(hostChoices);
+			
+		return hostChoices;
+	}
 		
 		// 正誤含めた4件アーティストの選択肢を作成する
 		private Quiz getHostNameChoices(Quiz quiz, List<Host> hostChoices) {
