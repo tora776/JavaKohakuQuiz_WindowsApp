@@ -11,7 +11,7 @@
     <form th:action="@{/submit}" th:object="${form}" method="post">
         <!-- クイズを繰り返し表示 -->
         <div th:each="quiz, iterStat : ${quizList}">
-            <p th:text="${quiz.quiz}"></p>
+            <p th:text="'問題' + (${iterStat.index + 1}) + ':' + ${quiz.quiz}"></p>
             <label>
                 <input type="radio" th:field="*{answers[__${iterStat.index}__]}" th:value="${quiz.answer1}" th:text="${quiz.answer1}"/>
             </label><br/>

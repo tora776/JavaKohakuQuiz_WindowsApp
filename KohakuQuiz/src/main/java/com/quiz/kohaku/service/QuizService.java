@@ -23,7 +23,7 @@ public class QuizService {
 		return dao.quizList();
 	}
 	
-	public String getCorrectAnswer(int caseNumber, String... strings ) {
+	public List<String> getCorrectAnswer(int caseNumber, String... strings ) {
 	    return dao.getCorrectAnswer(caseNumber, strings);
 	}
 	

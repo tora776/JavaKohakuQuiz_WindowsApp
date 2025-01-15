@@ -59,9 +59,10 @@ public class QuizDao implements IQuizDao {
 	}
 	
 	@Override
-	public String getCorrectAnswer(int caseNumber, String... strings) {
+	public List<String> getCorrectAnswer(int caseNumber, String... strings) {
 		StringBuilder sqlBuilder = new StringBuilder();
 		String sql;
+		List<String> list = new ArrayList<>();
 		switch(caseNumber) {
 			case 3: // {アーティスト名}が紅白で初めて歌った楽曲は何？
 				// 本来はappearance = 1が望ましいが、紅白歌合戦に関する全データを格納できていないため、appearanceが最小のときの楽曲で妥協している。 
@@ -74,7 +75,8 @@ public class QuizDao implements IQuizDao {
 					ps.setString(2, strings[0]);
 					ResultSet result = ps.executeQuery();
 					if (result.next()) {
-						return result.getString("artist_song");
+						list.add(result.getString("artist_song"));
+						return list;
 					}
 				} catch(SQLException e) {
 					e.printStackTrace();
@@ -92,35 +94,34 @@ public class QuizDao implements IQuizDao {
 					ps.setString(2, strings[1]);
 					ResultSet result = ps.executeQuery();
 					if (result.next()) {
-						return result.getString("count");
+						list.add(result.getString("count"));
+						return list;
 					}
 				} catch(SQLException e) {
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
-				
+			case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
+				// クエリを作成
+				sqlBuilder.append("SELECT host_name FROM host WHERE year = ? and host_role = ?;");
+				sql = sqlBuilder.toString();
+				// DBより正解を取得
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+					PreparedStatement ps = conn.prepareStatement(sql);){
+					ps.setString(1, strings[0]); // year
+					ps.setString(2, "総合司会"); // "総合司会"
+					ResultSet result = ps.executeQuery();
+					if (result.next()) {
+						list.add(result.getString("host_name"));
+						return list;
+					} else {
+						list.add("総合司会なし");
+					}
+				} catch(SQLException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
 		}
-		
-		
-		return "";
-
-		/*
-		// パラメータ設定用Map
-		Map<String, Object> param = new HashMap<>();
-		// タスク一覧をMapのListで取得
-		List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, param);
-		
-		
-		// データをlistにまとめる
-		for(Map<String, Object>result : resultList) {
-			Quiz quiz = new Quiz();
-			quiz.setCorrectAnswer(result.get("") != null ? (String)result.get("quiz_id") : ""); // result.get箇所を記載する。case文で分けること
-			list.add(quiz);
-		}
-		*/
-		
-		// return list;
+		return list;
 	}
-
-
 }

@@ -59,7 +59,7 @@ public class Util {
 		String artist2_name;
 		String artist_song;
 		String year;
-		String correctAnswer;
+		List<String> correctAnswer;
 		List<Artist> artistChoices = new ArrayList<>(3);
 		List<Host> hostChoices = new ArrayList<>(3);
 		
@@ -91,7 +91,7 @@ public class Util {
 				quiz_template = quiz_template.replace("{yyyy}", yyyy);
 				
 				// 選択肢を作成
-				List<String> appearances = getAppearanceChoices(appearance);
+				List<String> appearances = getRandomIntChoices(appearance);
 				quiz = getArtistAppearanceChoices(quiz, appearances);
 
 				// 作成したクイズを格納
@@ -132,9 +132,12 @@ public class Util {
 				quiz.setQuiz(quiz_template);
 				// 正解をDBから取得。case3のため、getCorrectAnswerの引数に3を使用。
 				correctAnswer = quizService.getCorrectAnswer(3, artist_name);
-				quiz.setCorrectAnswer(correctAnswer);
-				// 正解をartist_songに格納
-				artist.setArtist_song(correctAnswer);
+				if(correctAnswer.size() == 1) {
+					quiz.setCorrectAnswer(correctAnswer.get(0));
+					// 正解をartist_songに格納
+					artist.setArtist_song(correctAnswer.get(0));
+				}
+				
 				// 選択肢を作成
 				artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
@@ -171,24 +174,33 @@ public class Util {
 				quiz.setQuiz(quiz_template);
 				// 正解をDBから取得。case5のため、getCorrectAnswerの引数に5を使用。
 				correctAnswer = quizService.getCorrectAnswer(5, artist_name, artist_song);
-				quiz.setCorrectAnswer(correctAnswer);
+				if(correctAnswer.size() == 1) {
+					quiz.setCorrectAnswer(correctAnswer.get(0));
+					// 選択肢を作成
+					List<String> countSong = getRandomIntChoices(correctAnswer.get(0));
+					quiz = getArtistAppearanceChoices(quiz, countSong);
+				}
+				
 				break;
 				
 			case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
-				host = getRandomHost(hosts);
+				host = getRandomHost(hosts, "総合司会");
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
+				// 正解をDBから取得。case6のため、getCorrectAnswerの引数に5を使用。
+				//correctAnswer = quizService.getCorrectAnswer(6, year);
 				// 選択肢を作成
+				// hostChoices = getHostChoices(correctAnswer, hosts);
 				hostChoices = getHostChoices(host, hosts);
 				quiz = getHostNameChoices(quiz, hostChoices);
 				quiz.setCorrectAnswer(host.getHost_name());
 				break;
 				
-			case 7: // {yyyy}年の紅白歌合戦の紅組司会は誰？
-				host = getRandomHost(hosts);
+			case 7: // {yyyy}年の紅白歌合戦の紅組司会(女性司会)は誰？
+				host = getRandomHost(hosts, "紅組司会", "女性司会");
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
@@ -201,7 +213,7 @@ public class Util {
 				break;
 				
 			case 8: // {yyyy}年の紅白歌合戦の白組司会は誰？
-				host = getRandomHost(hosts);
+				host = getRandomHost(hosts, "白組司会", "男性司会");
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
@@ -254,14 +266,28 @@ public class Util {
 		return artist;
 	}
 	
-	private Host getRandomHost(List<Host> hosts) {
+	private Host getRandomHost(List<Host> hosts, String... host_roles) {
 		Random random = new Random();
 		int host_id = random.nextInt(hosts.size());
 		Host host = hosts.get(host_id);
+		/*
+		// 可変長引数host_roleの要素数を確認し、該当する司会者を取得
+		if(host_roles.length == 1) {
+			while(host.getHost_role().equals(host_roles[0])) {
+				host = hosts.get(host_id);
+			}
+		} else if(host_roles.length > 1) {
+			while(host.getHost_role().equals(host_roles[0]) || host.getHost_role().equals(host_roles[1])) {
+				host = hosts.get(host_id);
+			}
+		}
+		*/
+	
 		return host;
 	}
 	
-	private List<String> getAppearanceChoices(String appearance){
+	
+	private List<String> getRandomIntChoices(String appearance){
 		// 空のリストを作成
 		List<String> appearances = new ArrayList<>(3);
 		// 正解を格納
