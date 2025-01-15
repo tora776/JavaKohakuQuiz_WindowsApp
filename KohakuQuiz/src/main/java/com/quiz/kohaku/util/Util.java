@@ -49,19 +49,7 @@ public class Util {
 	}
 	
 	private Quiz buildQuizFromTemplate(int quiz_id, List<Quiz> quizzes) {
-		// 初期化
-		Artist artist;
-		Host host;
-		Result result;
-		String artist_name;
-		String appearance;
-		Artist artist2;
-		String artist2_name;
-		String artist_song;
-		String year;
-		String correctAnswer;
-		List<Artist> artistChoices = new ArrayList<>(3);
-		List<Host> hostChoices = new ArrayList<>(3);
+
 		
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
@@ -82,9 +70,9 @@ public class Util {
 		
 			case 1: // {yyyy}年現在、{アーティスト名}は過去何回紅白に出場している？
 				// アーティスト名・出場回数を取得
-				artist = getRandomArtist(artists);
-				artist_name = artist.getArtist_name();
-				appearance = String.valueOf(artist.getAppearance());
+				Artist artist = getRandomArtist(artists);
+				String artist_name = artist.getArtist_name();
+				String appearance = String.valueOf(artist.getAppearance());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				quiz_template = quiz_template.replace("{x}", appearance);
@@ -104,8 +92,8 @@ public class Util {
 				// アーティスト名を取得
 				artist = getRandomArtist(artists);
 				artist_name = artist.getArtist_name();
-				artist2 = getRandomArtist(artists);
-				artist2_name = artist2.getArtist_name();
+				Artist artist2 = getRandomArtist(artists);
+				String artist2_name = artist2.getArtist_name();
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名_1}", artist_name);
 				quiz_template = quiz_template.replace("{アーティスト名_2}", artist2_name);
@@ -131,7 +119,7 @@ public class Util {
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				// 正解をDBから取得。case3のため、getCorrectAnswerの引数に3を使用。
-				correctAnswer = quizService.getArtistCorrectAnswer(3, artist_name);
+				String correctAnswer = quizService.getArtistCorrectAnswer(3, artist_name);
 				if(correctAnswer != "") {
 					quiz.setCorrectAnswer(correctAnswer);
 					// 正解をartist_songに格納
@@ -143,7 +131,7 @@ public class Util {
 				}
 				
 				// 選択肢を作成
-				artistChoices = getArtistChoices(artist, artists);
+				List<Artist> artistChoices = getArtistChoices(artist, artists);
 				quiz = getArtistSongChoices(quiz, artistChoices);
 				
 				
@@ -169,7 +157,7 @@ public class Util {
 				// アーティスト名を取得
 				artist = getRandomArtist(artists);
 				artist_name = artist.getArtist_name();
-				artist_song = artist.getArtist_song();
+				String artist_song = artist.getArtist_song();
 				appearance = String.valueOf(artist.getAppearance());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
@@ -186,7 +174,7 @@ public class Util {
 				
 			case 6: // {yyyy}年の紅白歌合戦の総合司会は誰？
 				int host_year = getRandomYear(hosts);
-				year = String.valueOf(host_year);
+				String year = String.valueOf(host_year);
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
 				// クイズを作成
@@ -200,6 +188,7 @@ public class Util {
 					correctHosts.add(nullHost);
 				} 
 				// 正解を格納
+				List<Host> hostChoices = new ArrayList<>();
 				hostChoices.add(correctHosts.get(0));
 				
 				// 選択肢を作成
@@ -209,7 +198,7 @@ public class Util {
 				break;
 				
 			case 7: // {yyyy}年の紅白歌合戦の紅組司会(女性司会)は誰？
-				host = getRandomHost(hosts);
+				Host host = getRandomHost(hosts);
 				year = String.valueOf(host.getYear());
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{yyyy}", year);
@@ -261,7 +250,7 @@ public class Util {
 				quiz.setCorrectAnswer(getWinnerTeamHistory(results));
 				break;
 			case 11: // 昨年の紅白歌合戦の勝利チームは？
-				result = results.get(0);
+				Result result = results.get(0);
 				year = String.valueOf(result.getYear());
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
