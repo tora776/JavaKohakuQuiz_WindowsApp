@@ -69,7 +69,7 @@ public class QuizDao implements IQuizDao {
 				sqlBuilder.append("SELECT artist_song FROM artist WHERE artist_name = ? AND appearance = ( SELECT MIN(appearance) FROM artist WHERE artist_name = ?)");
 				sql = sqlBuilder.toString();
 				// DBより正解を取得
-				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "jigs12t4d");
 					PreparedStatement ps = conn.prepareStatement(sql);){
 					ps.setString(1, strings[0]);
 					ps.setString(2, strings[0]);
@@ -87,7 +87,7 @@ public class QuizDao implements IQuizDao {
 				sqlBuilder.append("SELECT COUNT(artist_song) FROM artist WHERE artist_name = ? AND artist_song = ?;");
 				sql = sqlBuilder.toString();
 				// DBより正解を取得
-				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "jigs12t4d");
 					PreparedStatement ps = conn.prepareStatement(sql);){
 					ps.setString(1, strings[0]);
 					ps.setString(2, strings[1]);
@@ -113,7 +113,7 @@ public class QuizDao implements IQuizDao {
 				sqlBuilder.append("SELECT * FROM host WHERE year = ? and host_role = ?;");
 				sql = sqlBuilder.toString();
 				// DBより正解を取得
-				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "jigs12t4d");
 					PreparedStatement ps = conn.prepareStatement(sql);){
 					ps.setInt(1, Integer.valueOf(strings[0])); // year
 					ps.setString(2, strings[1]); // "総合司会"
@@ -130,7 +130,7 @@ public class QuizDao implements IQuizDao {
 				sqlBuilder.append("SELECT * FROM host WHERE year = ? and (host_role = ? or host_role = ?);");
 				sql = sqlBuilder.toString();
 				// DBより正解を取得
-				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "jigs12t4d");
 					PreparedStatement ps = conn.prepareStatement(sql);){
 					ps.setInt(1, Integer.valueOf(strings[0])); // year
 					ps.setString(2, strings[1]); // "紅組司会", "白組司会"
@@ -148,7 +148,7 @@ public class QuizDao implements IQuizDao {
 				sqlBuilder.append("SELECT * FROM host WHERE year = ?;");
 				sql = sqlBuilder.toString();
 				// DBより正解を取得
-				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "2jfq9n1j");
+				try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kohaku_uta_gassen", "dbo", "jigs12t4d");
 					PreparedStatement ps = conn.prepareStatement(sql);){
 					ps.setInt(1, Integer.valueOf(strings[0])); // year
 					ResultSet rs = ps.executeQuery();
