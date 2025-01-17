@@ -26,7 +26,7 @@ public class Util {
 	private final HostService hostService;
 	private final ResultService resultService;
 	private final QuizService quizService;
-	    
+	   
     public Util(ArtistService artistService, HostService hostService, ResultService resultService, QuizService quizService) {
         this.artistService = artistService;
         this.hostService = hostService;
