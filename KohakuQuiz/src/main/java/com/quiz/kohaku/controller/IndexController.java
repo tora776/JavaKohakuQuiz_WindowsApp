@@ -2,7 +2,7 @@ package com.quiz.kohaku.controller;
 
 
 import com.quiz.kohaku.model.Quiz;
-import com.quiz.kohaku.util.Util;
+import com.quiz.kohaku.util.GenerateQuiz;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,7 +21,7 @@ public class IndexController {
 	
 	// SpringのコンテナからUtilインスタンスを注入する
 	@Autowired
-	private Util util;
+	private GenerateQuiz generateQuiz;
     
 
     @GetMapping("/")
@@ -30,7 +30,7 @@ public class IndexController {
         List<Quiz> quizList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
         	// クイズを作成
-        	Quiz quiz = util.GenerateQuizzes();
+        	Quiz quiz = generateQuiz.GenerateQuizzes();
         	quizList.add(quiz);
         }
         Form form = new Form();

@@ -20,14 +20,14 @@ import com.quiz.kohaku.service.QuizService;
 import com.quiz.kohaku.service.ResultService;
 
 @Component
-public class Util {
+public class GenerateQuiz {
 	
 	private final ArtistService artistService;
 	private final HostService hostService;
 	private final ResultService resultService;
 	private final QuizService quizService;
 	   
-    public Util(ArtistService artistService, HostService hostService, ResultService resultService, QuizService quizService) {
+    public GenerateQuiz(ArtistService artistService, HostService hostService, ResultService resultService, QuizService quizService) {
         this.artistService = artistService;
         this.hostService = hostService;
         this.resultService = resultService;
@@ -54,7 +54,7 @@ public class Util {
 		// 現在日時を取得
 		LocalDateTime nowDate = LocalDateTime.now();
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy"); 
-		String yyyy = dtf1.format(nowDate);
+		String nowYear = dtf1.format(nowDate);
 		// DBよりリストを取得
 		List<Artist> artists = artistService.artistList();
 		List<Host> hosts = hostService.hostList();
@@ -76,7 +76,7 @@ public class Util {
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名}", artist_name);
 				quiz_template = quiz_template.replace("{x}", appearance);
-				quiz_template = quiz_template.replace("{yyyy}", yyyy);
+				quiz_template = quiz_template.replace("{yyyy}", nowYear);
 				
 				// 選択肢を作成
 				List<String> appearances = getRandomIntChoices(appearance);
@@ -97,7 +97,7 @@ public class Util {
 				// テンプレートを置き換え
 				quiz_template = quiz_template.replace("{アーティスト名_1}", artist_name);
 				quiz_template = quiz_template.replace("{アーティスト名_2}", artist2_name);
-				quiz_template = quiz_template.replace("{yyyy}", yyyy);
+				quiz_template = quiz_template.replace("{yyyy}", nowYear);
 				// 作成したクイズを格納
 				quiz.setQuiz(quiz_template);
 				// 正解を格納
@@ -244,7 +244,7 @@ public class Util {
 				
 			case 10: // {yyyy}年現在、歴代紅白歌合戦でどちらのほうが勝利回数が多い？
 				// テンプレートを置き換え
-				quiz_template = quiz_template.replace("{yyyy}", yyyy);
+				quiz_template = quiz_template.replace("{yyyy}", nowYear);
 				// クイズを作成
 				quiz.setQuiz(quiz_template);
 				quiz.setCorrectAnswer(getWinnerTeamHistory(results));
@@ -260,9 +260,7 @@ public class Util {
 		}
 		return quiz;
 	}
-	
-	
-	
+
 	private Artist getRandomArtist(List<Artist> artists) {
 		Random random = new Random();
 		int artist_id = random.nextInt(artists.size());

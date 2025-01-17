@@ -4,10 +4,13 @@
 <script defer th:src="@{/js/CorrectCheck.js}"></script>
 <link th:href="@{/css/result.css}" rel="stylesheet">
 <meta charset="UTF-8">
-<title>解答結果</title>
+<title>紅白クイズ</title>
 </head>
 <body>
     <h1>解答結果</h1>
+    <div class="btn">
+    	<a href="/">トップに戻る</a>
+    </div>
     <table border="1" id="table">
         <thead>
             <tr>
@@ -35,7 +38,6 @@
             </tr>
         </tbody>
     </table>
-    <a href="/">トップに戻る</a>
     <!-- correctionsデータを埋め込む -->
     <div id="correctionsData" th:utext="${corrections}" style="display:none;"></div>
 </body>

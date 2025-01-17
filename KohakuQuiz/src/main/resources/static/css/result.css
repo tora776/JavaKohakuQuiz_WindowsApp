@@ -1,9 +1,13 @@
 @charset "UTF-8";
+table{
+	clear:both;
+}
 
 td{
 	vertical-align: middle;
 	position: relative;
 }
+
 td img{
 	display: inline-block;
 	vertical-align: middle;
@@ -18,4 +22,41 @@ td img{
 	font-size: 1.8rem;
 	margin: 0!important;/*文字がずれている場合や*/
 	padding: 0!important;/*文字が折り返される場合*/
+}
+
+h1{
+	float: left;
+	margin-right: 5px;
+}
+
+a{
+	text-decoration: none;
+}
+
+.btn a {
+  	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	width: 300px;
+	height: 60px;
+	color: #333;
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: none;
+   	background-color: #D3DEF1;
+    border-radius: 20px;
+}
+
+.btn a::after {
+  	content: '';
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	transform: rotate(45deg) translateY(-50%);
+	width: 6px;
+	height: 6px;
+	border-width: 2px 2px 0 0;
+	border-style: solid;
+	border-color: #325328;
 }
